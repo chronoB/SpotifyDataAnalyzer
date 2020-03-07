@@ -1,0 +1,30 @@
+{
+  "playlists": [
+    {
+      "name": "Example Playlist",
+      "lastModifiedDate": "2019-02-07",
+      "items": [
+        {
+          "track": {
+            "trackName": "Sununga (Ey Ey Ou Ou)",
+            "artistName": "Be Ignacio",
+            "albumName": "Sununga (Ey Ey Ou Ou)"
+          },
+          "episode": null,
+          "localTrack": null
+        },
+        {
+          "track": {
+            "trackName": "Want to Want Me",
+            "artistName": "Jason Derulo",
+            "albumName": "Everything Is 4"
+          },
+          "episode": null,
+          "localTrack": null
+        }
+      ],
+      "description": null,
+      "numberOfFollowers": 0
+    }
+  ]
+}

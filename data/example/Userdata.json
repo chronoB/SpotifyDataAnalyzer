@@ -1,0 +1,14 @@
+{
+  "username": "JohnDoe",
+  "email": "john.doe@gmail.com",
+  "country": "USA",
+  "createdFromFacebook": false,
+  "facebookUid": null,
+  "birthdate": "2000-01-01",
+  "gender": "male",
+  "postalCode": null,
+  "mobileNumber": null,
+  "mobileOperator": null,
+  "mobileBrand": null,
+  "creationTime": "2016-04-19"
+}
