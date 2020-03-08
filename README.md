@@ -52,7 +52,7 @@ The following structure is based on the folder i received. There could be files 
 
 - [x] 1. init //fills the dictionary with the items of the specified files
 - [x] 2. getPopularArtist //returns a list of popular artists based on search specifics
-- [ ] 3. getPopularItem //returns a list of popular items based on search specifics
+- [x] 3. getPopularItem //returns a list of popular items based on search specifics
 - [ ] 4. getNumberOfItems //returns a list with number of items per period based on search specifics
 - [ ] 5. getNumberOfItemsPerDaytime //returns the number of items per daytime
 - [ ] 6. getNumberOfItemsPerYear //returns the number of items per year
