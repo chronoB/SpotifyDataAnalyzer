@@ -33,30 +33,11 @@ class Analyzer:
     def getGeneralInformation(self):
         return
 
-    def getPopularArtist(self, count=5, media="all", payload={}):
-        media = Media(media)
-        searchSpecs = SearchSpecifics(payload)
-        popularArtists = {}
-        sorted_popularArtists = []
-        for item in self.library:
-            if not self._itemInTimeslot(searchSpecs, item) or not self._itemIsMedia(
-                media, item
-            ):
-                continue
+    def getPopularArtists(self, count=5, media="all", payload={}):
+        return self._getPopular("artistName", count=count, media=media, payload=payload)
 
-            key = "artistName"
-            popularArtists = self._addItemToList(item, popularArtists, key)
-
-            sorted_popularArtists = sorted(
-                popularArtists.items(), key=operator.itemgetter(1), reverse=True,
-            )
-        if count < len(sorted_popularArtists):
-            return sorted_popularArtists[:count]
-        else:
-            return sorted_popularArtists
-
-    def getPopularItem(self):
-        return
+    def getPopularItems(self, count=5, media="all", payload={}):
+        return self._getPopular("trackName", count=count, media=media, payload=payload)
 
     def getNumberOfItems(self):
         return
@@ -72,6 +53,28 @@ class Analyzer:
 
     def getNumberOfItemsPerDay(self):
         return
+
+    def _getPopular(self, key, count=5, media="all", payload={}):
+        # TODO: add byPlaytime parameter (playtime or amount of clicks) -> important for podcasts
+        media = Media(media)
+        searchSpecs = SearchSpecifics(payload)
+        popular = {}
+        sorted_popular = []
+        for item in self.library:
+            if not self._itemInTimeslot(searchSpecs, item) or not self._itemIsMedia(
+                media, item
+            ):
+                continue
+
+            popular = self._addItemToList(item, popular, key)
+
+            sorted_popular = sorted(
+                popular.items(), key=operator.itemgetter(1), reverse=True,
+            )
+        if count < len(sorted_popular):
+            return sorted_popular[:count]
+        else:
+            return sorted_popular
 
     def _fetchItemsFromLibraryFiles(self):
         for fileName in self.libraryFiles:
@@ -156,10 +159,18 @@ class Analyzer:
         }.get(media, False)
 
     def _addItemToList(self, item, usedDict, key):
-        if item[key] not in usedDict.keys():
-            usedDict[item[key]] = 1
-        else:
-            usedDict[item[key]] += 1
+        if key == "artistName":
+            if item[key] not in usedDict.keys():
+                usedDict[item[key]] = 1
+            else:
+                usedDict[item[key]] += 1
+        elif key == "trackName":
+            # when the popularItems should be returned they should be returned with "trackName - artistName"
+            extendedKey = item["trackName"] + " - " + item["artistName"]
+            if extendedKey not in usedDict.keys():
+                usedDict[extendedKey] = 1
+            else:
+                usedDict[extendedKey] += 1
         return usedDict
 
     def _fetchPodcastsFromFile(self):
