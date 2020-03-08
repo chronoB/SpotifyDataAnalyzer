@@ -13,8 +13,21 @@ PeriodSchema = Schema(
     }
 )
 
-DaytimeSchema = In(["night", "morning", "afternoon", "evening"])
-
+Daytime = In(["night", "morning", "afternoon", "evening"])
+DaytimeSchema = Schema({"daytime": Daytime,})
 Media = In(["music", "podcast", "all"])
 
-SearchSpecifics = Any(TimeSchema, PeriodSchema, DaytimeSchema, Schema({}))
+RatingCriterium = In(["clicks", "time"])
+
+Standard = {
+    "media": Media,
+    "count": int,
+    "ratingCrit": RatingCriterium,
+}
+
+SearchSpecifics = Any(
+    TimeSchema.extend(Standard),
+    PeriodSchema.extend(Standard),
+    DaytimeSchema.extend(Standard),
+    Schema(Standard),
+)

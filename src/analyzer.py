@@ -33,11 +33,11 @@ class Analyzer:
     def getGeneralInformation(self):
         return
 
-    def getPopularArtists(self, count=5, media="all", payload={}):
-        return self._getPopular("artistName", count=count, media=media, payload=payload)
+    def getPopularArtists(self, payload={}):
+        return self._getPopular("artistName", payload=payload)
 
-    def getPopularItems(self, count=5, media="all", payload={}):
-        return self._getPopular("trackName", count=count, media=media, payload=payload)
+    def getPopularItems(self, payload={}):
+        return self._getPopular("trackName", payload=payload)
 
     def getNumberOfItems(self):
         return
@@ -54,19 +54,29 @@ class Analyzer:
     def getNumberOfItemsPerDay(self):
         return
 
-    def _getPopular(self, key, count=5, media="all", payload={}):
-        # TODO: add byPlaytime parameter (playtime or amount of clicks) -> important for podcasts
-        media = Media(media)
+    def _getPopular(self, key, payload={}):
         searchSpecs = SearchSpecifics(payload)
+        media = (
+            Media("all") if not "media" in searchSpecs else Media(searchSpecs["media"])
+        )
+        count = 5 if not "count" in searchSpecs else searchSpecs["count"]
+
+        ratingCrit = (
+            RatingCriterium("clicks")
+            if not "ratingCrit" in searchSpecs
+            else RatingCriterium(searchSpecs["ratingCrit"])
+        )
+
         popular = {}
         sorted_popular = []
         for item in self.library:
-            if not self._itemInTimeslot(searchSpecs, item) or not self._itemIsMedia(
-                media, item
+            if not (
+                self._itemInTimeslot(searchSpecs, item)
+                and self._itemIsMedia(media, item)
             ):
                 continue
 
-            popular = self._addItemToList(item, popular, key)
+            popular = self._addItemToList(item, popular, key, ratingCrit)
 
             sorted_popular = sorted(
                 popular.items(), key=operator.itemgetter(1), reverse=True,
@@ -100,20 +110,30 @@ class Analyzer:
         if searchSpecs == {}:
             return True
 
-        daytime = ["night", "morning", "afternoon", "evening"]
-        if searchSpecs in daytime:
-            return self._itemInTimeslot_Daytime(searchSpecs, item)
+        if "daytime" in searchSpecs:
+            return self._itemInTimeslot_Daytime(searchSpecs["daytime"], item)
 
         elif "endYear" in searchSpecs:
             # endYear is required for a Period Schema
             return self._itemInTimeslot_Period(searchSpecs, item)
-        else:
+
+        elif (
+            "year" in searchSpecs
+            or "month" in searchSpecs
+            or "day" in searchSpecs
+            or "hour" in searchSpecs
+        ):
             return self._itemInTimeslot_Time(searchSpecs, item)
+
+        else:
+            return True
 
     def _itemInTimeslot_Time(self, searchSpecs, item):
         isInTimeslot = True
-        counter = 0
+
         for spec, value in searchSpecs.items():
+            if spec not in ["year", "month", "day", "hour"]:
+                continue
             res = {
                 "year": value == int(item["endTime"][:4]),
                 "month": value == int(item["endTime"][5:7]),
@@ -142,14 +162,14 @@ class Analyzer:
 
         return isInTimeslot
 
-    def _itemInTimeslot_Daytime(self, searchSpecs, item):
+    def _itemInTimeslot_Daytime(self, spec, item):
         hour = int(item["endTime"][11:13])
         return {
             "night": hour >= 0 and hour < 6,
             "morning": hour >= 6 and hour < 12,
             "afternoon": hour >= 12 and hour < 18,
             "night": hour >= 18 and hour <= 23,
-        }.get(searchSpecs, False)
+        }.get(spec, False)
 
     def _itemIsMedia(self, media, item):
         return {
@@ -158,19 +178,23 @@ class Analyzer:
             "music": item["artistName"] not in self.podcastList,
         }.get(media, False)
 
-    def _addItemToList(self, item, usedDict, key):
+    def _addItemToList(self, item, usedDict, key, ratingCrit):
         if key == "artistName":
             if item[key] not in usedDict.keys():
-                usedDict[item[key]] = 1
+                usedDict[item[key]] = 1 if ratingCrit == "clicks" else item["msPlayed"]
             else:
-                usedDict[item[key]] += 1
+                usedDict[item[key]] += 1 if ratingCrit == "clicks" else item["msPlayed"]
         elif key == "trackName":
             # when the popularItems should be returned they should be returned with "trackName - artistName"
             extendedKey = item["trackName"] + " - " + item["artistName"]
             if extendedKey not in usedDict.keys():
-                usedDict[extendedKey] = 1
+                usedDict[extendedKey] = (
+                    1 if ratingCrit == "clicks" else item["msPlayed"]
+                )
             else:
-                usedDict[extendedKey] += 1
+                usedDict[extendedKey] += (
+                    1 if ratingCrit == "clicks" else item["msPlayed"]
+                )
         return usedDict
 
     def _fetchPodcastsFromFile(self):

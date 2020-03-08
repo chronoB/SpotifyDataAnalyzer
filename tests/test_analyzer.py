@@ -92,7 +92,18 @@ def test_getPopularArtist_daytimeParameters():
     expectedRes = [("alt-J", 1), ("Left Boy", 1)]
     analyzer = Analyzer([test_file])
 
-    res = analyzer.getPopularArtists(payload="morning")
+    payload = {"daytime": "morning"}
+    res = analyzer.getPopularArtists(payload=payload)
+    assert expectedRes == res
+
+
+def test_getPopularArtist_byMsPlayed():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedRes = [("Almost Daily", 1045259)]
+    analyzer = Analyzer([test_file])
+
+    payload = {"ratingCrit": "time", "count": 1}
+    res = analyzer.getPopularArtists(payload=payload)
     assert expectedRes == res
 
 
@@ -101,7 +112,8 @@ def test_getPopularArtist_podcast():
     expectedRes = [("Almost Daily", 1)]
     analyzer = Analyzer([test_file])
 
-    res = analyzer.getPopularArtists(media="podcast")
+    payload = {"media": "podcast"}
+    res = analyzer.getPopularArtists(payload=payload)
     assert expectedRes == res
 
 
@@ -114,7 +126,10 @@ def test_checkSchema():
 
 def test_getPopularItems_noParameters():
     test_file = "./data/example/testUser1/StreamingHistory.json"
-    expectedPopularItem = ("Take Me Out - Live from Avatar Studios", 2)
+    expectedPopularItem = (
+        "Take Me Out - Live from Avatar Studios - Franz Ferdinand",
+        2,
+    )
     analyzer = Analyzer([test_file])
     popularItems = analyzer.getPopularItems()
 
