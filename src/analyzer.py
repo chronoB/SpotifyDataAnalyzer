@@ -1,4 +1,7 @@
 import json
+import operator
+
+from .schemas import *
 
 
 class Analyzer:
@@ -19,19 +22,37 @@ class Analyzer:
 
         """
         if streamingHistoryFiles == []:
-            streamingHistoryFiles = [
-                "./data/example/testUser/StreamingHistory.json"
-            ]
+            streamingHistoryFiles = ["./data/example/testUser/StreamingHistory.json"]
         self.libraryFiles = streamingHistoryFiles
-        self.library = dict()
+        self.library = list()
         self._fetchItemsFromLibraryFiles()
+        self.podcastList = dict()
+        self._fetchPodcastsFromFile()
         return
 
     def getGeneralInformation(self):
         return
 
-    def getPopularArtist(self):
-        return
+    def getPopularArtist(self, count=5, media="all", payload={}):
+        searchSpecs = SearchSpecifics(payload)
+        popularArtists = {}
+        sorted_popularArtists = []
+        for item in self.library:
+            if not self._itemInTimeslot(searchSpecs, item) or not self._itemIsMedia(
+                media, item
+            ):
+                continue
+
+            key = "artistName"
+            popularArtists = self._addItemToList(item, popularArtists, key)
+
+            sorted_popularArtists = sorted(
+                popularArtists.items(), key=operator.itemgetter(1), reverse=True,
+            )
+        if count < len(sorted_popularArtists):
+            return sorted_popularArtists[:count]
+        else:
+            return sorted_popularArtists
 
     def getPopularItem(self):
         return
@@ -55,31 +76,11 @@ class Analyzer:
         for fileName in self.libraryFiles:
             with open(fileName, encoding="utf-8") as jsonFile:
                 tmpList = json.load(jsonFile)
-                # turn list into dict
-                for i in range(len(tmpList)):
-                    # make keys out of artist and trackname
-                    key = (
-                        tmpList[i]["artistName"]
-                        + "_"
-                        + tmpList[i]["trackName"]
-                    )
-                    value = tmpList[i]
-
+                for entry in tmpList:
                     # add user as attribute
                     userName = self._getUsername(fileName)
-                    value["user"] = userName
-
-                    # handle case that song was played multiple times
-                    # add a counter at the end of the key
-                    # I did not use a random number to make lookups in dict easily possible if i don't care about how often it exists
-                    if key in self.library:
-                        counter = 1
-                        key += "_" + str(counter)
-                        while key in self.library:
-                            counter += 1
-                            key = key[: key.rfind("_")] + "_" + str(counter)
-
-                    self.library.update({key: value})
+                    entry["user"] = userName
+                self.library.extend(tmpList)
 
     def _getUsername(self, fileName):
         # Returns the username from a given filename
@@ -90,3 +91,76 @@ class Analyzer:
 
         idxOfSlash = getNthSlash(3)
         return fileName[idxOfSlash : fileName.rfind("/")]
+
+    def _itemInTimeslot(self, searchSpecs, item):
+        if searchSpecs == {}:
+            return True
+
+        daytime = ["night", "morning", "afternoon", "evening"]
+        if searchSpecs in daytime:
+            return self._itemInTimeslot_Daytime(searchSpecs, item)
+
+        elif "endYear" in searchSpecs:
+            # endYear is required for a Period Schema
+            return self._itemInTimeslot_Period(searchSpecs, item)
+        else:
+            return self._itemInTimeslot_Time(searchSpecs, item)
+
+    def _itemInTimeslot_Time(self, searchSpecs, item):
+        isInTimeslot = True
+        counter = 0
+        for spec, value in searchSpecs.items():
+            res = {
+                "year": value == int(item["endTime"][:4]),
+                "month": value == int(item["endTime"][5:7]),
+                "day": value == int(item["endTime"][8:10]),
+                "hour": value == int(item["endTime"][11:13]),
+            }.get(spec, False)
+            if not res:
+                isInTimeslot = False
+        return isInTimeslot
+
+    def _itemInTimeslot_Period(self, searchSpecs, item):
+        isInTimeslot = True
+        itemYear = int(item["endTime"][:4])
+        itemMonth = int(item["endTime"][5:7])
+        itemDay = int(item["endTime"][8:10])
+
+        if (
+            searchSpecs["startYear"] > itemYear
+            or searchSpecs["endYear"] < itemYear
+            or searchSpecs["startMonth"] < itemMonth
+            or searchSpecs["endMonth"] < itemMonth
+            or searchSpecs["startDay"] < itemDay
+            or searchSpecs["startMonth"] < itemDay
+        ):
+            isInTimeslot = False
+
+        return isInTimeslot
+
+    def _itemInTimeslot_Daytime(self, searchSpecs, item):
+        hour = int(item["endTime"][11:13])
+        return {
+            "night": hour >= 0 and hour < 6,
+            "morning": hour >= 6 and hour < 12,
+            "afternoon": hour >= 12 and hour < 18,
+            "night": hour >= 18 and hour <= 23,
+        }.get(searchSpecs, False)
+
+    def _itemIsMedia(self, media, item):
+        return {
+            "all": True,
+            "podcast": item["artistName"] in self.podcastList,
+            "music": item["artistName"] not in self.podcastList,
+        }.get(media, False)
+
+    def _addItemToList(self, item, usedDict, key):
+        if item[key] not in usedDict.keys():
+            usedDict[item[key]] = 1
+        else:
+            usedDict[item[key]] += 1
+        return usedDict
+
+    def _fetchPodcastsFromFile(self):
+        with open("data/podcastFile.txt", encoding="utf-8") as podcastFile:
+            self.podcastList = podcastFile.readlines()

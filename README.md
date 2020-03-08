@@ -23,17 +23,17 @@ This repository is build to analyze the user data spotify is collecting. The dow
 
 ## How to get the spotify user data
 
-Disclaimer: Only checked for german spotify account. I don't know if it works for every account or is a country-specific features due to specific GDPR laws. 
+Disclaimer: Only checked for german spotify account. I don't know if it works for every account or is a country-specific features due to specific GDPR laws.
 
 Go to : https://www.spotify.com/account/privacy/
 Follow the instructions under "Deine Daten herunterladen". The process should take 1-7 days. You will be emailed if your data is ready to be downloaded.
 
-Afterwards copy the extracted folder into this directory. 
+Afterwards copy the extracted folder into this directory.
 
 ## User data structure
 Detailed explanation of the data : https://support.spotify.com/de/account_payment_help/privacy/understanding-my-data/
 
-The following structure is based on the folder i received. There could be files missing or some additional files (the website is referencing a voiceinput and a conclusions file) 
+The following structure is based on the folder i received. There could be files missing or some additional files (the website is referencing a voiceinput and a conclusions file)
 
 ./my-spotify-data
 - CarThing.json // Information about a (possibly existing) CarThing-device
@@ -51,10 +51,10 @@ The following structure is based on the folder i received. There could be files 
 ## Progress
 
 - [x] 1. init //fills the dictionary with the items of the specified files
-- [ ] 2. getPopularArtist //returns a list of popular artists based on search specifics
+- [x] 2. getPopularArtist //returns a list of popular artists based on search specifics
 - [ ] 3. getPopularItem //returns a list of popular items based on search specifics
 - [ ] 4. getNumberOfItems //returns a list with number of items per period based on search specifics
-- [ ] 5. getNumberOfItemsPerDaytime //returns the number of items per daytime  
+- [ ] 5. getNumberOfItemsPerDaytime //returns the number of items per daytime
 - [ ] 6. getNumberOfItemsPerYear //returns the number of items per year
 - [ ] 7. getNumberOfItemsPerMonth //returns the number of items per month
 - [ ] 8. getNumberOfItemsPerDay //returns the number of items per day
