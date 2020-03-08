@@ -15,4 +15,6 @@ PeriodSchema = Schema(
 
 DaytimeSchema = In(["night", "morning", "afternoon", "evening"])
 
+Media = In(["music", "podcast", "all"])
+
 SearchSpecifics = Any(TimeSchema, PeriodSchema, DaytimeSchema, Schema({}))

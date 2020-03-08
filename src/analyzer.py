@@ -34,6 +34,7 @@ class Analyzer:
         return
 
     def getPopularArtist(self, count=5, media="all", payload={}):
+        media = Media(media)
         searchSpecs = SearchSpecifics(payload)
         popularArtists = {}
         sorted_popularArtists = []
@@ -163,4 +164,4 @@ class Analyzer:
 
     def _fetchPodcastsFromFile(self):
         with open("data/podcastFile.txt", encoding="utf-8") as podcastFile:
-            self.podcastList = podcastFile.readlines()
+            self.podcastList = podcastFile.read().splitlines()

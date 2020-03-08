@@ -15,7 +15,7 @@ def test_init_noParameters():
 
 def test_init_fileSpecified():
     test_file = "./data/example/testUser1/StreamingHistory.json"
-    numberOfItemsStreamed = 4
+    numberOfItemsStreamed = 5
 
     analyzer = Analyzer([test_file])
     assert test_file == analyzer.libraryFiles[0]
@@ -25,7 +25,7 @@ def test_init_fileSpecified():
 def test_init_multipleFilesSpecified():
     test_file = "./data/example/testUser1/StreamingHistory.json"
     test_file2 = "./data/example/testUser2/StreamingHistory.json"
-    numberOfItemsStreamed = 7
+    numberOfItemsStreamed = 8
     streamingHistoryFiles = [test_file, test_file2]
 
     analyzer = Analyzer(streamingHistoryFiles=streamingHistoryFiles)
@@ -93,6 +93,15 @@ def test_getPopularArtist_daytimeParameters():
     analyzer = Analyzer([test_file])
 
     res = analyzer.getPopularArtist(payload="morning")
+    assert expectedRes == res
+
+
+def test_getPopularArtist_podcast():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedRes = [("Almost Daily", 1)]
+    analyzer = Analyzer([test_file])
+
+    res = analyzer.getPopularArtist(media="podcast")
     assert expectedRes == res
 
 
