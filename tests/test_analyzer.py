@@ -23,6 +23,16 @@ def test_init_fileSpecified():
     assert numberOfItemsStreamed == len(analyzer.library)
 
 
+def test_init_checkPodcastLabel():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    numberOfItemsStreamed = 5
+
+    analyzer = Analyzer([test_file])
+
+    assert analyzer.library[0]["podcast"] == False
+    assert analyzer.library[4]["podcast"] == True
+
+
 def test_init_multipleFilesSpecified():
     test_file = "./data/example/testUser1/StreamingHistory.json"
     test_file2 = "./data/example/testUser2/StreamingHistory.json"
