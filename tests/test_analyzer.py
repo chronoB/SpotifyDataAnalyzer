@@ -1,6 +1,7 @@
 import pytest
-from src.analyzer import Analyzer
 from voluptuous import MultipleInvalid
+
+from src.analyzer import Analyzer
 
 
 def test_init_noParameters():
