@@ -1,3 +1,4 @@
+import heapq
 import json
 import operator
 
@@ -24,10 +25,10 @@ class Analyzer:
         if streamingHistoryFiles == []:
             streamingHistoryFiles = ["./data/example/testUser/StreamingHistory.json"]
         self.libraryFiles = streamingHistoryFiles
-        self.library = list()
-        self._fetchItemsFromLibraryFiles()
         self.podcastList = dict()
         self._fetchPodcastsFromFile()
+        self.library = list()
+        self._fetchItemsFromLibraryFiles()
         return
 
     def getGeneralInformation(self):
@@ -69,6 +70,7 @@ class Analyzer:
 
         popular = {}
         sorted_popular = []
+
         for item in self.library:
             if not (
                 self._itemInTimeslot(searchSpecs, item)
@@ -78,9 +80,9 @@ class Analyzer:
 
             popular = self._addItemToList(item, popular, key, ratingCrit)
 
-            sorted_popular = sorted(
-                popular.items(), key=operator.itemgetter(1), reverse=True,
-            )
+        sorted_popular_keys = heapq.nlargest(count, popular, key=popular.get)
+        sorted_popular = [[key, popular[key]] for key in sorted_popular_keys]
+
         if count < len(sorted_popular):
             return sorted_popular[:count]
         else:
@@ -94,6 +96,10 @@ class Analyzer:
                     # add user as attribute
                     userName = self._getUsername(fileName)
                     entry["user"] = userName
+                    entry["podcast"] = (
+                        True if entry["artistName"] in self.podcastList else False
+                    )
+
                 self.library.extend(tmpList)
 
     def _getUsername(self, fileName):
@@ -174,8 +180,8 @@ class Analyzer:
     def _itemIsMedia(self, media, item):
         return {
             "all": True,
-            "podcast": item["artistName"] in self.podcastList,
-            "music": item["artistName"] not in self.podcastList,
+            "podcast": item["podcast"],
+            "music": not item["podcast"],
         }.get(media, False)
 
     def _addItemToList(self, item, usedDict, key, ratingCrit):
