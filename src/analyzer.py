@@ -81,7 +81,7 @@ class Analyzer:
             popular = self._addItemToList(item, popular, key, ratingCrit)
 
         sorted_popular_keys = heapq.nlargest(count, popular, key=popular.get)
-        sorted_popular = [[key, popular[key]] for key in sorted_popular_keys]
+        sorted_popular = [(key, popular[key]) for key in sorted_popular_keys]
 
         if count < len(sorted_popular):
             return sorted_popular[:count]
