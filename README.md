@@ -48,6 +48,54 @@ The following structure is based on the folder i received. There could be files 
 - YourLibrary.json // Information about saved songs in your library
 
 
+## SearchSpecifics
+
+The SearchSpecifics design the search query. There are two main queries: specific time or time period. The keys for either of them cannot be used together (e.g. `year`and `startYear`). Additional parameters described below can be added to both of them.
+### Search for a specific time (a specific day, a year, a specific hour)
+```python
+#search for every song that was played on the 2nd of September in 2019 between 10 and 11.
+payload = {
+  "year": 2019,
+  "month": 9,
+  "day": 2,
+  "hour": 10
+}
+#search for every song that was played on the 2nd of a month
+payload = {
+  "day": 2
+}
+
+#search for every song that was played in February 2020
+payload = {
+  "year": 2020
+  "month": 2
+}
+```
+### Search for timeperiod (from 2019-05-03 until 2019-07-22)
+IMPORTANT: If any of the following parameters is used, every of the following parameters has to be used. They come as a bundle.
+```
+payload = {
+        "startYear": 2019,
+        "startMonth": 5,
+        "startDay": 3,
+        "endYear": 2019,
+        "endMonth": 7,
+        "endDay": 22,
+    }
+```
+### Additional search parameters
+`count` specifies how many items should be returned (`default=5`). `media` determines if the search result should include/exclude podcast/music (`default=all`). The podcasts are defined in [data/podcastFile.txt](./data/podcastFile.txt). Right now it's a collection of found podcasts in the example files. Future plans involve fetching a list of podcasts from a podcatcher [(feel free to contribute)](#contribution). `ratingCrit` is used to sort items per playtime or per clicks, because spotify is saving the ms played per song click (`default=clicks`).
+
+```
+payload = {
+        ...
+        "count": 3, #how many items should be returned
+        "media": "podcast", #"podcast", "music", "all"
+        "ratingCrit": "time", #"time", "clicks"
+    }
+```
+
+
 ## Progress
 
 - [x] 1. init //fills the dictionary with the items of the specified files
@@ -60,7 +108,11 @@ The following structure is based on the folder i received. There could be files 
 - [ ] 8. getNumberOfItemsPerDay //returns the number of items per day
 - [ ] 9. getGeneralInformation // Returns general Information (Name of User, number of played songs overall, Period of the recorded data,...)
 
+## Plans
+
+- Add `"weekday"` option to searchspecs
+- populate [podcastFile.txt](./data/podcastFile.txt) programatically
 
 ## Contributions are welcome!
-
+<a name="contribution"></a>
 If you want to contribute to this, please read the [Contribution guidelines](CONTRIBUTING.md)
