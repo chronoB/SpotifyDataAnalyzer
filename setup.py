@@ -30,7 +30,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     keywords="spotify data analysis",
-    packages=find_packages(include=["src", "src.*"]),
+    packages=find_packages(include=["src", "src.*", "examples.py"]),
     python_requires=">=3.6",
     install_requires=["voluptuous==0.11.7"],
     tests_require=["pytest"],
