@@ -19,3 +19,4 @@ repos:
   rev: v4.3.21
   hooks:
     - id: isort
+      args: [--recursive ./src ./tests]
