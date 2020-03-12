@@ -10,7 +10,7 @@
 <p align="center">
   <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
   <a href="https://github.com/chronoB/SpotifyDataAnalyzer/issues"><img alt="Open Issues" src="https://img.shields.io/github/issues/chronoB/SpotifyDataAnalyzer"></a>
-  <a href="https://github.com/chronoB/SpotifyDataAnalyzer/releases"><img alt="Release" src="https://img.shields.io/github/release/chronoB/SpotifyDataAnalyzer"></a>
+  <a href="https://github.com/chronoB/SpotifyDataAnalyzer/releases"><img alt="Release" src="https://img.shields.io/github/release/chronoB/SpotifyDataAnalyzer.svg"></a>
   <a href="https://dev.azure.com/chronoB/SpotifyDataAnalyzer/_build/latest?definitionId=1&branchName=master"><img alt="Azure Pipelines status" src="https://dev.azure.com/finnobayer/SpotifyDataAnalyzer/_apis/build/status/chronoB.SpotifyDataAnalyzer?branchName=master"></a>
 
 </p>
@@ -101,11 +101,11 @@ payload = {
 - [x] 1. init //fills the dictionary with the items of the specified files
 - [x] 2. getPopularArtist //returns a list of popular artists based on search specifics
 - [x] 3. getPopularItem //returns a list of popular items based on search specifics
-- [ ] 4. getNumberOfItems //returns a list with number of items per period based on search specifics
-- [ ] 5. getNumberOfItemsPerDaytime //returns the number of items per daytime
-- [ ] 6. getNumberOfItemsPerYear //returns the number of items per year
-- [ ] 7. getNumberOfItemsPerMonth //returns the number of items per month
-- [ ] 8. getNumberOfItemsPerDay //returns the number of items per day
+- [x] 4. getNumberOfItems //returns a list with number of items per period based on search specifics
+- [ ] 5. getDataPerDaytime //returns data (number, artist or item) per daytime
+- [ ] 6. getDataPerYear //returns data (number, artist or item) per year
+- [ ] 7. getDataPerMonth //returns data (number, artist or item) per month
+- [ ] 8. getDataPerDay //returns data (number, artist or item) per day
 - [ ] 9. getGeneralInformation // Returns general Information (Name of User, number of played songs overall, Period of the recorded data,...)
 
 ## Plans

@@ -40,33 +40,35 @@ class Analyzer:
     def getPopularItems(self, payload={}):
         return self._getPopular("trackName", payload=payload)
 
-    def getNumberOfItems(self):
+    def getNumberOfItems(self, payload={}):
+        searchSpecs, media, count, ratingCrit = self._extractSearchSpecs(payload)
+        numOfItems = 0
+        if count == 0:
+            return 0
+        for item in self.library:
+            if not (
+                self._itemInTimeslot(searchSpecs, item)
+                and self._itemIsMedia(media, item)
+            ):
+                continue
+            numOfItems += 1
+        return numOfItems
+
+    def getDataPerDayTime(self):
+
         return
 
-    def getNumberOfItemsPerDayTime(self):
+    def getDataPerYear(self):
         return
 
-    def getNumberOfItemsPerYear(self):
+    def getDataPerMonth(self):
         return
 
-    def getNumberOfItemsPerMonth(self):
-        return
-
-    def getNumberOfItemsPerDay(self):
+    def getDataPerDay(self):
         return
 
     def _getPopular(self, key, payload={}):
-        searchSpecs = SearchSpecifics(payload)
-        media = (
-            Media("all") if not "media" in searchSpecs else Media(searchSpecs["media"])
-        )
-        count = 5 if not "count" in searchSpecs else searchSpecs["count"]
-
-        ratingCrit = (
-            RatingCriterium("clicks")
-            if not "ratingCrit" in searchSpecs
-            else RatingCriterium(searchSpecs["ratingCrit"])
-        )
+        searchSpecs, media, count, ratingCrit = self._extractSearchSpecs(payload)
 
         popular = {}
         sorted_popular = []
@@ -206,3 +208,16 @@ class Analyzer:
     def _fetchPodcastsFromFile(self):
         with open("data/podcastFile.txt", encoding="utf-8") as podcastFile:
             self.podcastList = podcastFile.read().splitlines()
+
+    def _extractSearchSpecs(self, payload):
+        searchSpecs = SearchSpecifics(payload)
+        media = (
+            Media("all") if not "media" in searchSpecs else Media(searchSpecs["media"])
+        )
+        count = 5 if not "count" in searchSpecs else searchSpecs["count"]
+        ratingCrit = (
+            RatingCriterium("clicks")
+            if not "ratingCrit" in searchSpecs
+            else RatingCriterium(searchSpecs["ratingCrit"])
+        )
+        return (searchSpecs, media, count, ratingCrit)

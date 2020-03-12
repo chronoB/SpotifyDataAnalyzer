@@ -145,3 +145,74 @@ def test_getPopularItems_noParameters():
     popularItems = analyzer.getPopularItems()
 
     assert expectedPopularItem == popularItems[0]
+
+
+def test_getNumberOfItems_noParameters():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedNumber = 5
+    analyzer = Analyzer([test_file])
+    result = analyzer.getNumberOfItems()
+    assert expectedNumber == result
+
+    test_file = "./data/example/testUser2/StreamingHistory.json"
+    expectedNumber = 3
+    analyzer = Analyzer([test_file])
+    result = analyzer.getNumberOfItems()
+    assert expectedNumber == result
+
+
+def test_getNumberOfItems_mediaSpecified():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedNumberOverall = 5
+    expectedNumberMusic = 4
+    expectedNumberPodcast = 1
+
+    analyzer = Analyzer([test_file])
+    payload = {"media": "all"}
+    assert expectedNumberOverall == analyzer.getNumberOfItems(payload=payload)
+    payload = {"media": "music"}
+    assert expectedNumberMusic == analyzer.getNumberOfItems(payload=payload)
+    payload = {"media": "podcast"}
+    assert expectedNumberPodcast == analyzer.getNumberOfItems(payload=payload)
+
+
+def test_getNumberOfItems_timeSpecified():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedNumber = 3
+    analyzer = Analyzer([test_file])
+    assert expectedNumber == analyzer.getNumberOfItems(
+        payload={"year": 2018, "month": 9,}
+    )
+
+
+def test_getNumberOfItems_periodSpecified():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedNumber = 1
+    analyzer = Analyzer([test_file])
+    payload = {
+        "startYear": 2018,
+        "startMonth": 9,
+        "startDay": 3,
+        "endYear": 2018,
+        "endMonth": 9,
+        "endDay": 4,
+    }
+    assert expectedNumber == analyzer.getNumberOfItems(payload=payload)
+
+
+def test_getNumberOfItems_ratingCritSpecified():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    analyzer = Analyzer([test_file])
+    res1 = analyzer.getNumberOfItems(payload={"ratingCrit": "clicks"})
+    res2 = analyzer.getNumberOfItems(payload={"ratingCrit": "time"})
+    assert res1 == res2
+
+
+def test_getNumberOfItems_countSpecified():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    analyzer = Analyzer([test_file])
+    res1 = analyzer.getNumberOfItems(payload={"count": 5})
+    res2 = analyzer.getNumberOfItems(payload={"count": 7})
+    assert res1 == res2
+    res3 = analyzer.getNumberOfItems(payload={"count": 0})
+    assert res3 == 0
