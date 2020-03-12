@@ -86,3 +86,10 @@ def test_getPopularItems_noParameters(analyzer_TestUser1):
 
     popularItems = analyzer.getPopularItems()
     assert expectedPopularItem == popularItems[0]
+
+
+def test_getPopularItems_count(analyzer_TestUser1):
+    analyzer = analyzer_TestUser1
+
+    popularItems = analyzer.getPopularItems(payload={"count": 1})
+    assert len(popularItems) == 1
