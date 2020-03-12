@@ -55,25 +55,31 @@ class Analyzer:
         return numOfItems
 
     def getDataPerDayTime(self, dataType="number"):
+        return self._getDataPer("daytime", daytimeList, dataType)
+
+    def getDataPerYear(self, dataType="number"):
+        yearList = self._getListOfPossibleYears()
+        return self._getDataPer("year", yearList, dataType)
+
+    def getDataPerMonth(self, dataType="number"):
+        monthList = [x for x in range(1, 13)]
+        return self._getDataPer("month", monthList, dataType)
+
+    def getDataPerDay(self, dataType="number"):
+        dayList = [x for x in range(1, 32)]
+        return self._getDataPer("day", dayList, dataType)
+
+    def _getDataPer(self, key, timeList, dataType):
         dt = DataType(dataType)
         retDict = {}
-        for daytime in daytimeList:
+        for time in timeList:
             data = {
-                "number": self.getNumberOfItems(payload={"daytime": daytime}),
-                "artist": self.getPopularArtists(payload={"daytime": daytime}),
-                "item": self.getPopularItems(payload={"daytime": daytime}),
+                "number": self.getNumberOfItems(payload={key: time}),
+                "artist": self.getPopularArtists(payload={key: time}),
+                "item": self.getPopularItems(payload={key: time}),
             }.get(dt, [])
-            retDict[daytime] = data
+            retDict[time] = data
         return retDict
-
-    def getDataPerYear(self):
-        return
-
-    def getDataPerMonth(self):
-        return
-
-    def getDataPerDay(self):
-        return
 
     def _getPopular(self, key, payload={}):
         searchSpecs, media, count, ratingCrit = self._extractSearchSpecs(payload)
@@ -229,3 +235,12 @@ class Analyzer:
             else RatingCriterium(searchSpecs["ratingCrit"])
         )
         return (searchSpecs, media, count, ratingCrit)
+
+    def _getListOfPossibleYears(self):
+        listOfYears = []
+        for item in self.library:
+            year = int(item["endTime"][:4])
+            if year not in listOfYears:
+                listOfYears.append(year)
+
+        return listOfYears
