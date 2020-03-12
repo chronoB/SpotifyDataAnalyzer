@@ -106,12 +106,12 @@ payload = {
 - [x] 6. getDataPerYear //returns data (number, artist or item) per year
 - [x] 7. getDataPerMonth //returns data (number, artist or item) per month
 - [x] 8. getDataPerDay //returns data (number, artist or item) per day
-- [ ] 9. getGeneralInformation // Returns general Information (Name of User, number of played songs overall, Period of the recorded data,...)
 
 ## Plans
 
 - Add `"weekday"` option to searchspecs
 - populate [podcastFile.txt](./data/podcastFile.txt) programatically
+- add more analyzers (searchHistory analyzer, general information analyzer). Therefor maybe restructure the code
 
 ## Contributions are welcome!
 <a name="contribution"></a>

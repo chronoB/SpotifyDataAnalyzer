@@ -31,9 +31,6 @@ class Analyzer:
         self._fetchItemsFromLibraryFiles()
         return
 
-    def getGeneralInformation(self):
-        return
-
     def getPopularArtists(self, payload={}):
         return self._getPopular("artistName", payload=payload)
 
