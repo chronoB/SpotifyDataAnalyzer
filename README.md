@@ -102,7 +102,7 @@ payload = {
 - [x] 2. getPopularArtist //returns a list of popular artists based on search specifics
 - [x] 3. getPopularItem //returns a list of popular items based on search specifics
 - [x] 4. getNumberOfItems //returns a list with number of items per period based on search specifics
-- [ ] 5. getDataPerDaytime //returns data (number, artist or item) per daytime
+- [x] 5. getDataPerDaytime //returns data (number, artist or item) per daytime
 - [ ] 6. getDataPerYear //returns data (number, artist or item) per year
 - [ ] 7. getDataPerMonth //returns data (number, artist or item) per month
 - [ ] 8. getDataPerDay //returns data (number, artist or item) per day

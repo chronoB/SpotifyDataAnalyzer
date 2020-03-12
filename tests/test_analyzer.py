@@ -216,3 +216,45 @@ def test_getNumberOfItems_countSpecified():
     assert res1 == res2
     res3 = analyzer.getNumberOfItems(payload={"count": 0})
     assert res3 == 0
+
+
+def test_getDataPerDaytime_noParameters():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedResult = {"night": 1, "morning": 2, "afternoon": 1, "evening": 1}
+    analyzer = Analyzer([test_file])
+    res = analyzer.getDataPerDayTime()
+    assert expectedResult == res
+
+
+def test_getDataPerDaytime_number():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedResult = {"night": 1, "morning": 2, "afternoon": 1, "evening": 1}
+    analyzer = Analyzer([test_file])
+    res = analyzer.getDataPerDayTime("number")
+    assert expectedResult == res
+
+
+def test_getDataPerDaytime_artists():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedResult = {
+        "night": [("Franz Ferdinand", 1)],
+        "morning": [("alt-J", 1), ("Left Boy", 1)],
+        "afternoon": [("Almost Daily", 1)],
+        "evening": [("Franz Ferdinand", 1)],
+    }
+    analyzer = Analyzer([test_file])
+    res = analyzer.getDataPerDayTime("artist")
+    assert expectedResult == res
+
+
+def test_getDataPerDaytime_item():
+    test_file = "./data/example/testUser1/StreamingHistory.json"
+    expectedResult = {
+        "night": [("Take Me Out - Live from Avatar Studios - Franz Ferdinand", 1)],
+        "morning": [("Tessellate - alt-J", 1), ("The Return of... - Left Boy", 1)],
+        "afternoon": [("Fragen aus der Community - Almost Daily", 1)],
+        "evening": [("Take Me Out - Live from Avatar Studios - Franz Ferdinand", 1)],
+    }
+    analyzer = Analyzer([test_file])
+    res = analyzer.getDataPerDayTime("item")
+    assert expectedResult == res

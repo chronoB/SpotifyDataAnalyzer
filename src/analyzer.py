@@ -54,9 +54,17 @@ class Analyzer:
             numOfItems += 1
         return numOfItems
 
-    def getDataPerDayTime(self):
-
-        return
+    def getDataPerDayTime(self, dataType="number"):
+        dt = DataType(dataType)
+        retDict = {}
+        for daytime in daytimeList:
+            data = {
+                "number": self.getNumberOfItems(payload={"daytime": daytime}),
+                "artist": self.getPopularArtists(payload={"daytime": daytime}),
+                "item": self.getPopularItems(payload={"daytime": daytime}),
+            }.get(dt, [])
+            retDict[daytime] = data
+        return retDict
 
     def getDataPerYear(self):
         return
@@ -176,7 +184,7 @@ class Analyzer:
             "night": hour >= 0 and hour < 6,
             "morning": hour >= 6 and hour < 12,
             "afternoon": hour >= 12 and hour < 18,
-            "night": hour >= 18 and hour <= 23,
+            "evening": hour >= 18 and hour <= 23,
         }.get(spec, False)
 
     def _itemIsMedia(self, media, item):

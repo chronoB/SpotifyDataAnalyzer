@@ -13,7 +13,8 @@ PeriodSchema = Schema(
     }
 )
 
-Daytime = In(["night", "morning", "afternoon", "evening"])
+daytimeList = ["night", "morning", "afternoon", "evening"]
+Daytime = In(daytimeList)
 DaytimeSchema = Schema({"daytime": Daytime,})
 Media = In(["music", "podcast", "all"])
 
@@ -31,3 +32,5 @@ SearchSpecifics = Any(
     DaytimeSchema.extend(Standard),
     Schema(Standard),
 )
+
+DataType = In(["number", "artist", "item"])
