@@ -1,5 +1,4 @@
 import pytest
-from voluptuous import MultipleInvalid
 
 from src.analyzer import Analyzer
 
@@ -20,13 +19,6 @@ def analyzer_TestUser1():
 def analyzer_TestUser2():
     test_file = "./data/example/testUser2/StreamingHistory.json"
     return Analyzer([test_file])
-
-
-def test_checkSchema():
-    analyzer = Analyzer()
-    with pytest.raises(MultipleInvalid):
-        assert analyzer.getPopularArtists(payload={"startYear": 2018,})
-        assert analyzer.getPopularArtists(payload={"wrongKey": 2018,})
 
 
 def test_init_noParameters():

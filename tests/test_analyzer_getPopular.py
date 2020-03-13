@@ -47,9 +47,11 @@ def test_getPopularArtist_periodParameters(analyzer_TestUser1):
             "startYear": 2018,
             "startMonth": 9,
             "startDay": 3,
+            "startHour": 0,
             "endYear": 2018,
             "endMonth": 9,
             "endDay": 4,
+            "endHour": 0,
         }
     )
     assert expectedRes == res
@@ -95,6 +97,15 @@ def test_getPopularItems_noParameters(analyzer_TestUser1):
 
     popularItems = analyzer.getPopularItems()
     assert expectedPopularItem == popularItems[0]
+
+
+def test_getPopularItems_Weekday(analyzer_TestUser1):
+    analyzer = analyzer_TestUser1
+    expectedPopularItem = [
+        ("Take Me Out - Live from Avatar Studios - Franz Ferdinand", 1,)
+    ]
+    popularItems = analyzer.getPopularItems(payload={"weekday": 0})
+    assert expectedPopularItem == popularItems
 
 
 def test_getPopularItems_count(analyzer_TestUser1):

@@ -1,6 +1,7 @@
 import heapq
 import json
 import operator
+from datetime import datetime
 
 from .schemas import *
 
@@ -50,6 +51,12 @@ class Analyzer:
                 continue
             numOfItems += 1
         return numOfItems
+
+    def getDataPerWeekday(self, dataType="number", weekdayFormat=0):
+        if type(weekdayFormat) == int:
+            return self._getDataPer("weekday", weekdayNumbers, dataType)
+        elif type(weekdayFormat) == str:
+            return self._getDataPer("weekday", weekdayNames, dataType)
 
     def getDataPerDayTime(self, dataType="number"):
         return self._getDataPer("daytime", daytimeList, dataType)
@@ -126,6 +133,10 @@ class Analyzer:
         if searchSpecs == {}:
             return True
 
+        if "weekday" in searchSpecs:
+            if not self._itemInTimeslot_Weekday(searchSpecs["weekday"], item):
+                return False
+
         if "daytime" in searchSpecs:
             return self._itemInTimeslot_Daytime(searchSpecs["daytime"], item)
 
@@ -160,17 +171,21 @@ class Analyzer:
 
     def _itemInTimeslot_Period(self, searchSpecs, item):
         isInTimeslot = True
-        itemYear = int(item["endTime"][:4])
-        itemMonth = int(item["endTime"][5:7])
-        itemDay = int(item["endTime"][8:10])
-
+        startDate = datetime(
+            searchSpecs["startYear"],
+            searchSpecs["startMonth"],
+            searchSpecs["startDay"],
+            searchSpecs["startHour"],
+        )
+        endDate = datetime(
+            searchSpecs["endYear"],
+            searchSpecs["endMonth"],
+            searchSpecs["endDay"],
+            searchSpecs["endHour"],
+        )
         if (
-            searchSpecs["startYear"] > itemYear
-            or searchSpecs["endYear"] < itemYear
-            or searchSpecs["startMonth"] < itemMonth
-            or searchSpecs["endMonth"] < itemMonth
-            or searchSpecs["startDay"] < itemDay
-            or searchSpecs["startMonth"] < itemDay
+            datetime.fromisoformat(item["endTime"]) < startDate
+            or datetime.fromisoformat(item["endTime"]) > endDate
         ):
             isInTimeslot = False
 
@@ -184,6 +199,19 @@ class Analyzer:
             "afternoon": hour >= 12 and hour < 18,
             "evening": hour >= 18 and hour <= 23,
         }.get(spec, False)
+
+    def _itemInTimeslot_Weekday(self, spec, item):
+        if str == type(spec):
+            spec = {
+                "monday": 0,
+                "tuesday": 1,
+                "wednesday": 2,
+                "thursday": 3,
+                "friday": 4,
+                "saturday": 5,
+                "sunday": 6,
+            }.get(spec)
+        return datetime.weekday(datetime.fromisoformat(item["endTime"])) == spec
 
     def _itemIsMedia(self, media, item):
         return {

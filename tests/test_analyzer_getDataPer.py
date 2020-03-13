@@ -225,3 +225,75 @@ def test_getDataPerDay_item(analyzer_TestUser1):
     expectedResult[15] = [("Tessellate - alt-J", 1), ("The Return of... - Left Boy", 1)]
 
     assert expectedResult == analyzer.getDataPerDay("item")
+
+
+def test_getDataPerWeekday_noParameters(analyzer_TestUser1):
+    analyzer = analyzer_TestUser1
+
+    expectedResult = {}
+    for day in range(0, 7):
+        expectedResult[day] = 0
+    expectedResult[0] = 1
+    expectedResult[1] = 2
+    expectedResult[5] = 2
+
+    assert expectedResult == analyzer.getDataPerWeekday()
+
+
+def test_getDataPerWeekday_number(analyzer_TestUser1):
+    analyzer = analyzer_TestUser1
+
+    expectedResult = {}
+    for day in range(0, 7):
+        expectedResult[day] = 0
+    expectedResult[0] = 1
+    expectedResult[1] = 2
+    expectedResult[5] = 2
+
+    assert expectedResult == analyzer.getDataPerWeekday("number")
+
+
+def test_getDataPerWeekday_artists(analyzer_TestUser1):
+    analyzer = analyzer_TestUser1
+
+    expectedResult = {}
+    for day in range(0, 7):
+        expectedResult[day] = []
+    expectedResult[0] = [("Franz Ferdinand", 1)]
+    expectedResult[1] = [("Franz Ferdinand", 1), ("Almost Daily", 1)]
+    expectedResult[5] = [("alt-J", 1), ("Left Boy", 1)]
+
+    assert expectedResult == analyzer.getDataPerWeekday("artist",)
+
+
+def test_getDataPerWeekday_item(analyzer_TestUser1):
+    analyzer = analyzer_TestUser1
+
+    expectedResult = {}
+    for day in range(0, 7):
+        expectedResult[day] = []
+    expectedResult[0] = [
+        ("Take Me Out - Live from Avatar Studios - Franz Ferdinand", 1)
+    ]
+    expectedResult[1] = [
+        ("Take Me Out - Live from Avatar Studios - Franz Ferdinand", 1),
+        ("Fragen aus der Community - Almost Daily", 1),
+    ]
+    expectedResult[5] = [("Tessellate - alt-J", 1), ("The Return of... - Left Boy", 1)]
+
+    assert expectedResult == analyzer.getDataPerWeekday("item")
+
+
+def test_getDataPerWeekday_weekdayFormat(analyzer_TestUser1):
+    from src.schemas import weekdayNames
+
+    analyzer = analyzer_TestUser1
+
+    expectedResult = {}
+    for day in weekdayNames:
+        expectedResult[day] = 0
+    expectedResult["monday"] = 1
+    expectedResult["tuesday"] = 2
+    expectedResult["saturday"] = 2
+
+    assert expectedResult == analyzer.getDataPerWeekday(weekdayFormat=str())

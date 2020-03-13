@@ -45,9 +45,11 @@ def test_getNumberOfItems_periodSpecified(analyzer_TestUser1):
         "startYear": 2018,
         "startMonth": 9,
         "startDay": 3,
+        "startHour": 0,
         "endYear": 2018,
         "endMonth": 9,
         "endDay": 4,
+        "endHour": 0,
     }
     assert expectedNumber == analyzer.getNumberOfItems(payload=payload)
 

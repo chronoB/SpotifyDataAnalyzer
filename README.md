@@ -106,10 +106,13 @@ payload = {
 - [x] 6. getDataPerYear //returns data (number, artist or item) per year
 - [x] 7. getDataPerMonth //returns data (number, artist or item) per month
 - [x] 8. getDataPerDay //returns data (number, artist or item) per day
+- [ ] 9. Add `"weekday"` option to searchspecs
+- [ ] 10. Search for specific item/artist and return data
+
 
 ## Plans
 
-- Add `"weekday"` option to searchspecs
+- add the possibility to sort for genre. Need external lib for that. Don't know if possible
 - release
 - populate [podcastFile.txt](./data/podcastFile.txt) programatically
 - add more analyzers (searchHistory analyzer, general information analyzer). Therefor maybe restructure the code
