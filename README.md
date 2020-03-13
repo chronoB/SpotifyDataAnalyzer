@@ -110,6 +110,7 @@ payload = {
 ## Plans
 
 - Add `"weekday"` option to searchspecs
+- release
 - populate [podcastFile.txt](./data/podcastFile.txt) programatically
 - add more analyzers (searchHistory analyzer, general information analyzer). Therefor maybe restructure the code
 

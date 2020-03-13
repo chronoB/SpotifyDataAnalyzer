@@ -28,6 +28,15 @@ def test_getPopularArtist_timeParameter_hour(analyzer_TestUser1):
     assert expectedRes == res
 
 
+def test_getPopularArtist_timeAndMedia(analyzer_TestUser1):
+    analyzer = analyzer_TestUser1
+
+    expectedRes = [("alt-J", 1), ("Left Boy", 1)]
+
+    res = analyzer.getPopularArtists(payload={"hour": 10, "media": "music"})
+    assert expectedRes == res
+
+
 def test_getPopularArtist_periodParameters(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 

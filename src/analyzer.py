@@ -153,7 +153,7 @@ class Analyzer:
                 "month": value == int(item["endTime"][5:7]),
                 "day": value == int(item["endTime"][8:10]),
                 "hour": value == int(item["endTime"][11:13]),
-            }.get(spec, False)
+            }.get(spec, True)
             if not res:
                 isInTimeslot = False
         return isInTimeslot
