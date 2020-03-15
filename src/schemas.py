@@ -53,6 +53,7 @@ weekdayNames = [
 ]
 
 Standard = {
+    "keyword": str,
     "weekday": Weekday,
     "media": Media,
     "count": int,

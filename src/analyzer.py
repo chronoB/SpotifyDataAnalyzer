@@ -39,7 +39,9 @@ class Analyzer:
         return self._getPopular("trackName", payload=payload)
 
     def getNumberOfItems(self, payload={}):
-        searchSpecs, media, count, ratingCrit = self._extractSearchSpecs(payload)
+        searchSpecs, keyword, media, count, ratingCrit = self._extractSearchSpecs(
+            payload
+        )
         numOfItems = 0
         if count == 0:
             return 0
@@ -47,6 +49,7 @@ class Analyzer:
             if not (
                 self._itemInTimeslot(searchSpecs, item)
                 and self._itemIsMedia(media, item)
+                and self._itemHasKeyword(keyword, item)
             ):
                 continue
             numOfItems += 1
@@ -86,7 +89,9 @@ class Analyzer:
         return retDict
 
     def _getPopular(self, key, payload={}):
-        searchSpecs, media, count, ratingCrit = self._extractSearchSpecs(payload)
+        searchSpecs, keyword, media, count, ratingCrit = self._extractSearchSpecs(
+            payload
+        )
 
         popular = {}
         sorted_popular = []
@@ -95,6 +100,7 @@ class Analyzer:
             if not (
                 self._itemInTimeslot(searchSpecs, item)
                 and self._itemIsMedia(media, item)
+                and self._itemHasKeyword(keyword, item)
             ):
                 continue
 
@@ -254,7 +260,8 @@ class Analyzer:
             if not "ratingCrit" in searchSpecs
             else RatingCriterium(searchSpecs["ratingCrit"])
         )
-        return (searchSpecs, media, count, ratingCrit)
+        keyword = "" if not "keyword" in searchSpecs else searchSpecs["keyword"]
+        return (searchSpecs, keyword, media, count, ratingCrit)
 
     def _getListOfPossibleYears(self):
         listOfYears = []
@@ -264,3 +271,9 @@ class Analyzer:
                 listOfYears.append(year)
 
         return listOfYears
+
+    def _itemHasKeyword(self, keyword, item):
+        if keyword in item["artistName"]:
+            return True
+        if keyword in item["trackName"]:
+            return True

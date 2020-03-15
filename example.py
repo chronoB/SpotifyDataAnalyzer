@@ -76,6 +76,16 @@ def main():
     print(pi)
 
     print()
+    print("Example 2c: getPopularItems() with keyword")
+    pi = analyzer.getPopularItems(payload={"keyword": "Franz Ferdinand"})
+    print(pi)
+
+    print()
+    print("Example 2c2: getPopularItems() with keyword")
+    pi = analyzer.getPopularItems(payload={"keyword": "the"})
+    print(pi)
+
+    print()
     print("Example 3: getDataPerWeekday()")
     dpw = analyzer.getDataPerWeekday()
     print(dpw)

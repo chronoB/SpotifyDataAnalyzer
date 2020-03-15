@@ -111,7 +111,7 @@ payload = {
 - [x] 7. getDataPerMonth //returns data (number, artist or item) per month
 - [x] 8. getDataPerDay //returns data (number, artist or item) per day
 - [x] 9. Add `"weekday"` option to searchspecs
-- [ ] 10. Search for specific item/artist and return data
+- [x] 10. Search for specific item/artist and return data
 
 
 ## Plans
