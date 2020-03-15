@@ -76,13 +76,13 @@ def main():
     print(pi)
 
     print()
-    print("Example 2c: getPopularItems() with keyword")
+    print("Example 2c: getPopularItems() with keyword 'franz ferdinand'")
     pi = analyzer.getPopularItems(payload={"keyword": "Franz Ferdinand"})
     print(pi)
 
     print()
-    print("Example 2c2: getPopularItems() with keyword")
-    pi = analyzer.getPopularItems(payload={"keyword": "the"})
+    print("Example 2c2: getPopularItems() with keyword 'acoustic'")
+    pi = analyzer.getPopularItems(payload={"keyword": "acoustic"})
     print(pi)
 
     print()

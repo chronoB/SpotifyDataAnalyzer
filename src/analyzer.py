@@ -273,7 +273,7 @@ class Analyzer:
         return listOfYears
 
     def _itemHasKeyword(self, keyword, item):
-        if keyword in item["artistName"]:
+        if keyword.lower() in item["artistName"].lower():
             return True
-        if keyword in item["trackName"]:
+        if keyword.lower() in item["trackName"].lower():
             return True
