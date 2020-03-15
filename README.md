@@ -21,6 +21,10 @@
 
 This repository is build to analyze the user data spotify is collecting. The downloadable personal user data can be examined regarding different features. Right now it only analyses the streaming history of one or multiple users. Other analyses aren't planned at the moment.
 
+## Dependencies
+
+PYTHON >=3.7
+
 ## How to get the spotify user data
 
 Disclaimer: Only checked for german spotify account. I don't know if it works for every account or is a country-specific features due to specific GDPR laws.
@@ -106,7 +110,7 @@ payload = {
 - [x] 6. getDataPerYear //returns data (number, artist or item) per year
 - [x] 7. getDataPerMonth //returns data (number, artist or item) per month
 - [x] 8. getDataPerDay //returns data (number, artist or item) per day
-- [ ] 9. Add `"weekday"` option to searchspecs
+- [x] 9. Add `"weekday"` option to searchspecs
 - [ ] 10. Search for specific item/artist and return data
 
 
