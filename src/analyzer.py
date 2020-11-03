@@ -2,6 +2,7 @@ import heapq
 import json
 import operator
 from datetime import datetime
+import sqlite3
 
 from .schemas import *
 
@@ -25,9 +26,8 @@ class Analyzer:
         """
         if streamingHistoryFiles == []:
             streamingHistoryFiles = ["./data/example/testUser/StreamingHistory.json"]
+        self._initDatabaseConnection()
         self.libraryFiles = streamingHistoryFiles
-        self.podcastList = dict()
-        self._fetchPodcastsFromFile()
         self.library = list()
         self._fetchItemsFromLibraryFiles()
         return
@@ -119,11 +119,18 @@ class Analyzer:
                     # add user as attribute
                     userName = self._getUsername(fileName)
                     entry["user"] = userName
-                    entry["podcast"] = (
-                        True if entry["artistName"] in self.podcastList else False
-                    )
+                    entry["podcast"] = self._checkIfPodcast(entry["artistName"])
 
                 self.library.extend(tmpList)
+
+    def _checkIfPodcast(self, name):
+        cursor = self.databaseConnection.cursor()
+        cursor.execute("SELECT count(*) FROM podcasts WHERE name = ?", (name,))
+        data=cursor.fetchone()[0]
+        if data==0:
+            return False
+        else:
+            return True
 
     def _getUsername(self, fileName):
         # Returns the username from a given filename
@@ -245,10 +252,6 @@ class Analyzer:
                 )
         return usedDict
 
-    def _fetchPodcastsFromFile(self):
-        with open("data/podcastFile.txt", encoding="utf-8") as podcastFile:
-            self.podcastList = podcastFile.read().splitlines()
-
     def _extractSearchSpecs(self, payload):
         searchSpecs = SearchSpecifics(payload)
         media = (
@@ -277,3 +280,12 @@ class Analyzer:
             return True
         if keyword.lower() in item["trackName"].lower():
             return True
+
+    def _initDatabaseConnection(self):
+        db_file = "./data/podcasts.db"
+        try:
+            self.databaseConnection = sqlite3.connect(db_file)
+            
+        except Exception as e:
+            print("Error connecting to database:")
+            print(e)
