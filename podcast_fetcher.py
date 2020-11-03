@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import sys
 from sqlite3 import Error
 from string import ascii_lowercase
 
@@ -92,9 +93,14 @@ if __name__ == "__main__":
     if conn is not None:
         # create podcast table
         create_table(conn, sql_create_podcasts_table)
-
+        language = sys.argv[1]
         for letter in ascii_lowercase:
-            url = "https://api.spotify.com/v1/search?type=show&limit=50&q=" + letter
+            url = (
+                "https://api.spotify.com/v1/search?type=show&limit=50&q="
+                + letter
+                + "&market="
+                + language
+            )
             print("Populating database for letter: " + letter)
             populateDatabase(url)
 
