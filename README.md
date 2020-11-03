@@ -12,6 +12,7 @@
   <a href="https://github.com/chronoB/SpotifyDataAnalyzer/issues"><img alt="Open Issues" src="https://img.shields.io/github/issues/chronoB/SpotifyDataAnalyzer"></a>
   <a href="https://github.com/chronoB/SpotifyDataAnalyzer/releases"><img alt="Release" src="https://img.shields.io/github/release/chronoB/SpotifyDataAnalyzer.svg"></a>
   <a href="https://dev.azure.com/chronoB/SpotifyDataAnalyzer/_build/latest?definitionId=1&branchName=master"><img alt="Azure Pipelines status" src="https://dev.azure.com/finnobayer/SpotifyDataAnalyzer/_apis/build/status/chronoB.SpotifyDataAnalyzer?branchName=master"></a>
+  <a href="https://results.pre-commit.ci/latest/github/chronoB/SpotifyDataAnalyzer/master"><img alt="pre-commit-ci status" src="https://results.pre-commit.ci/badge/github/chronoB/SpotifyDataAnalyzer/master.svg"></a>
 
 </p>
 
