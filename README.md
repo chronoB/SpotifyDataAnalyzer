@@ -101,25 +101,10 @@ payload = {
 ```
 
 
-## Progress
-
-- [x] 1. init //fills the dictionary with the items of the specified files
-- [x] 2. getPopularArtist //returns a list of popular artists based on search specifics
-- [x] 3. getPopularItem //returns a list of popular items based on search specifics
-- [x] 4. getNumberOfItems //returns a list with number of items per period based on search specifics
-- [x] 5. getDataPerDaytime //returns data (number, artist or item) per daytime
-- [x] 6. getDataPerYear //returns data (number, artist or item) per year
-- [x] 7. getDataPerMonth //returns data (number, artist or item) per month
-- [x] 8. getDataPerDay //returns data (number, artist or item) per day
-- [x] 9. Add `"weekday"` option to searchspecs
-- [x] 10. Search for specific item/artist and return data
-
 
 ## Plans
 
 - add the possibility to sort for genre. Need external lib for that. Don't know if possible
-- release
-- populate [podcastFile.txt](./data/podcastFile.txt) programatically
 - add more analyzers (searchHistory analyzer, general information analyzer). Therefor maybe restructure the code
 
 ## Contributions are welcome!
