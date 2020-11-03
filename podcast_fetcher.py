@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import sys
 from sqlite3 import Error
 from string import ascii_lowercase
 
@@ -95,6 +96,11 @@ if __name__ == "__main__":
 
         for letter in ascii_lowercase:
             url = "https://api.spotify.com/v1/search?type=show&limit=50&q=" + letter
+
+            if len(sys.argv) > 1:
+                language = sys.argv[1]
+                url + "&market=" + language
+
             print("Populating database for letter: " + letter)
             populateDatabase(url)
 
