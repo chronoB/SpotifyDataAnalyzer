@@ -32,7 +32,10 @@ def test_getNumberOfItems_timeSpecified(analyzer_TestUser1):
     expectedNumber = 3
 
     assert expectedNumber == analyzer.getNumberOfItems(
-        payload={"year": 2018, "month": 9,}
+        payload={
+            "year": 2018,
+            "month": 9,
+        }
     )
 
 

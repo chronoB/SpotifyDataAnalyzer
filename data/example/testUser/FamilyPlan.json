@@ -1,10 +1,10 @@
 {
   "address": {
-    "city": "Anytown", 
-    "country": "USA", 
-    "real_name": null, 
-    "state": "PA", 
-    "street": "123 Maple Street", 
+    "city": "Anytown",
+    "country": "USA",
+    "real_name": null,
+    "state": "PA",
+    "street": "123 Maple Street",
     "postal_code": "17101"
   }
 }

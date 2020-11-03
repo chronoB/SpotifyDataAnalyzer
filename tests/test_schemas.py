@@ -6,8 +6,16 @@ from src.schemas import *
 
 def test_wrongKeys():
     with pytest.raises(MultipleInvalid):
-        assert SearchSpecifics({"startYear": 2018,})
-        assert SearchSpecifics({"wrongKey": 2018,})
+        assert SearchSpecifics(
+            {
+                "startYear": 2018,
+            }
+        )
+        assert SearchSpecifics(
+            {
+                "wrongKey": 2018,
+            }
+        )
 
 
 def test_weekday():
@@ -21,6 +29,14 @@ def test_weekday():
         "sunday",
     ]
     for day in weekdays:
-        assert SearchSpecifics({"weekday": day,})
+        assert SearchSpecifics(
+            {
+                "weekday": day,
+            }
+        )
     for x in range(0, 7):
-        assert SearchSpecifics({"weekday": x,})
+        assert SearchSpecifics(
+            {
+                "weekday": x,
+            }
+        )

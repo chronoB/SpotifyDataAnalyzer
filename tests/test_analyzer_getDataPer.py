@@ -263,7 +263,9 @@ def test_getDataPerWeekday_artists(analyzer_TestUser1):
     expectedResult[1] = [("Franz Ferdinand", 1), ("Almost Daily", 1)]
     expectedResult[5] = [("alt-J", 1), ("Left Boy", 1)]
 
-    assert expectedResult == analyzer.getDataPerWeekday("artist",)
+    assert expectedResult == analyzer.getDataPerWeekday(
+        "artist",
+    )
 
 
 def test_getDataPerWeekday_item(analyzer_TestUser1):

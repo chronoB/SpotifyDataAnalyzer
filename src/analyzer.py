@@ -1,15 +1,15 @@
 import heapq
 import json
 import operator
-from datetime import datetime
 import sqlite3
+from datetime import datetime
 
 from .schemas import *
 
 
 class Analyzer:
     def __init__(self, streamingHistoryFiles=[]):
-        """ Load the data from the given StreamingHistory files into a dictionary for lookups.
+        """Load the data from the given StreamingHistory files into a dictionary for lookups.
         Every item will have an extra "user"-feature added that contains the name of the folder where the StreamingHistory is located.
         Example of default value:
         {
@@ -126,8 +126,8 @@ class Analyzer:
     def _checkIfPodcast(self, name):
         cursor = self.databaseConnection.cursor()
         cursor.execute("SELECT count(*) FROM podcasts WHERE name = ?", (name,))
-        data=cursor.fetchone()[0]
-        if data==0:
+        data = cursor.fetchone()[0]
+        if data == 0:
             return False
         else:
             return True
@@ -285,7 +285,7 @@ class Analyzer:
         db_file = "./data/podcasts.db"
         try:
             self.databaseConnection = sqlite3.connect(db_file)
-            
+
         except Exception as e:
             print("Error connecting to database:")
             print(e)

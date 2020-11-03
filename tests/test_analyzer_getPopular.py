@@ -15,7 +15,12 @@ def test_getPopularArtist_timeParameters(analyzer_TestUser1):
 
     expectedRes = [("Franz Ferdinand", 1), ("alt-J", 1), ("Left Boy", 1)]
 
-    res = analyzer.getPopularArtists(payload={"year": 2018, "month": 9,})
+    res = analyzer.getPopularArtists(
+        payload={
+            "year": 2018,
+            "month": 9,
+        }
+    )
     assert expectedRes == res
 
 
@@ -24,7 +29,11 @@ def test_getPopularArtist_timeParameter_hour(analyzer_TestUser1):
 
     expectedRes = [("alt-J", 1), ("Left Boy", 1)]
 
-    res = analyzer.getPopularArtists(payload={"hour": 10,})
+    res = analyzer.getPopularArtists(
+        payload={
+            "hour": 10,
+        }
+    )
     assert expectedRes == res
 
 
@@ -102,7 +111,10 @@ def test_getPopularItems_noParameters(analyzer_TestUser1):
 def test_getPopularItems_Weekday(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
     expectedPopularItem = [
-        ("Take Me Out - Live from Avatar Studios - Franz Ferdinand", 1,)
+        (
+            "Take Me Out - Live from Avatar Studios - Franz Ferdinand",
+            1,
+        )
     ]
     popularItems = analyzer.getPopularItems(payload={"weekday": 0})
     assert expectedPopularItem == popularItems

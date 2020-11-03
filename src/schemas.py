@@ -1,6 +1,13 @@
 from voluptuous import Any, In, Required, Schema
 
-TimeSchema = Schema({"year": int, "month": int, "day": int, "hour": int,})
+TimeSchema = Schema(
+    {
+        "year": int,
+        "month": int,
+        "day": int,
+        "hour": int,
+    }
+)
 
 PeriodSchema = Schema(
     {
@@ -17,7 +24,11 @@ PeriodSchema = Schema(
 
 daytimeList = ["night", "morning", "afternoon", "evening"]
 Daytime = In(daytimeList)
-DaytimeSchema = Schema({"daytime": Daytime,})
+DaytimeSchema = Schema(
+    {
+        "daytime": Daytime,
+    }
+)
 
 Media = In(["music", "podcast", "all"])
 
