@@ -105,7 +105,10 @@ payload = {
 ## Plans
 
 - add the possibility to sort for genre. Need external lib for that. Don't know if possible
+- add the spotify audio analyze api for fancy stuff
+- add multiple year support (if not already happened)
 - add more analyzers (searchHistory analyzer, general information analyzer). Therefor maybe restructure the code
+
 
 ## Contributions are welcome!
 <a name="contribution"></a>
