@@ -105,9 +105,19 @@ payload = {
 ## Plans
 
 - add the possibility to sort for genre. Need external lib for that. Don't know if possible
-- add the spotify audio analyze api for fancy stuff
 - add multiple year support (if not already happened)
 - add more analyzers (searchHistory analyzer, general information analyzer). Therefor maybe restructure the code
+- Cache the library/Check if file is already in the database
+- include mypy/static typing
+
+## Current WIP
+
+- Add audio analyzer
+  - Get the Audio URI for the Tracks in the library
+    - add the audio uri to the db entry of the track when including new data
+    - check if data is already included (extra table with links to file? Bad when changing path of file and restarting the analyzer, but maybe ok for my purposes?)
+    -
+
 
 
 ## Contributions are welcome!
