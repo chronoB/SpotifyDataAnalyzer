@@ -5,14 +5,8 @@ from sqlite3 import Error
 from string import ascii_lowercase
 
 import requests
-
-try:
-    from dotenv import load_dotenv
-
-    load_dotenv("")
-    BEARER_TOKEN = os.getenv("BEARER_TOKEN")
-except ImportError as e:
-    print(e)
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
 
 def create_connection(db_file):
@@ -65,22 +59,34 @@ def create_podcast(conn, podcast):
     return cur.lastrowid
 
 
-def populateDatabase(url):
-    headers = {"Authorization": "Bearer " + BEARER_TOKEN}
-    r = requests.get(url, headers=headers)
+def populateDatabase(letter, language="de"):
+    spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
+    results = spotify.search(
+        q="shows:" + letter, type="show", limit=50, market=language
+    )
 
-    if r.status_code == 200:
-        data = r.json()
-        for show in data["shows"]["items"]:
+    for show in results["shows"]["items"]:
+        create_podcast(conn, show["name"])
+
+    while results["shows"]["next"]:
+        for show in results["shows"]["items"]:
             create_podcast(conn, show["name"])
-        if data["shows"]["next"]:
-            populateDatabase(data["shows"]["next"])
-    elif r.status_code == 401:
-        print("Error while requesting:")
-        print(r.text)
+        results = spotify.next(results["shows"])
 
 
 if __name__ == "__main__":
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv("")
+        if not os.getenv("SPOTIPY_CLIENT_ID") or not os.getenv("SPOTIPY_CLIENT_SECRET"):
+            print(
+                "ERROR: Environment variables for spotipy not set. See https://spotipy.readthedocs.io/en/2.16.1/ for more details. Use .env file."
+            )
+            sys.exit(1)
+    except ImportError as e:
+        print(e)
+        sys.exit(1)
 
     database_path = r"./data/podcasts.db"
     sql_create_podcasts_table = """ CREATE TABLE IF NOT EXISTS podcasts (
@@ -95,14 +101,13 @@ if __name__ == "__main__":
         create_table(conn, sql_create_podcasts_table)
 
         for letter in ascii_lowercase:
-            url = "https://api.spotify.com/v1/search?type=show&limit=50&q=" + letter
-
-            if len(sys.argv) > 1:
-                language = sys.argv[1]
-                url + "&market=" + language
 
             print("Populating database for letter: " + letter)
-            populateDatabase(url)
+            if len(sys.argv) > 1:
+                language = sys.argv[1]
+                populateDatabase(letter, language)
+            else:
+                populateDatabase(letter)
 
     else:
         print("Error! cannot create the database connection.")

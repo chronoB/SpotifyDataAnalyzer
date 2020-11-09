@@ -4,6 +4,7 @@ import operator
 import sqlite3
 from datetime import datetime
 
+from .audio_analyzer import Audio_Analyzer
 from .schemas import *
 
 
@@ -30,7 +31,16 @@ class Analyzer:
         self.libraryFiles = streamingHistoryFiles
         self.library = list()
         self._fetchItemsFromLibraryFiles()
+        self._audioAnalyzer = None
         return
+
+    def getAudioAnalyzer(self):
+        if not self._audioAnalyzer:
+            self._audioAnalyzer = AudioAnalyzer()
+        return self._audioAnalyzer
+
+    def setAudioAnalyzer(self, audioAnalyzer):
+        self._audioAnalyzer = audioAnalyzer
 
     def getPopularArtists(self, payload={}):
         return self._getPopular("artistName", payload=payload)
