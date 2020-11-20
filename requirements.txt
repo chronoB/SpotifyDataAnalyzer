@@ -23,7 +23,7 @@ py==1.8.1
 pyparsing==2.4.6
 pytest==5.3.5
 pytest-cov==2.8.1
-PyYAML==5.3
+PyYAML==5.3.1
 regex==2020.2.20
 rope==0.16.0
 seed-isort-config==2.2.0
