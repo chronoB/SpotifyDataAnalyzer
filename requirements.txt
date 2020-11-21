@@ -14,6 +14,7 @@ identify==1.4.11
 importlib-metadata==1.5.0
 isort==5.6.4
 more-itertools==8.2.0
+mypy==0.790
 nodeenv==1.5.0
 packaging==20.4
 pathspec==0.7.0
