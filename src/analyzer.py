@@ -120,6 +120,7 @@ class Analyzer:
                     userName = self._getUsername(fileName)
                     entry["user"] = userName
                     entry["podcast"] = self._checkIfPodcast(entry["artistName"])
+                    entry["msPlayed"] = str(entry["msPlayed"])
 
                 self.library.extend(tmpList)
 
@@ -236,19 +237,23 @@ class Analyzer:
     def _addItemToList(self, item, usedDict, key, ratingCrit):
         if key == "artistName":
             if item[key] not in usedDict.keys():
-                usedDict[item[key]] = 1 if ratingCrit == "clicks" else item["msPlayed"]
+                usedDict[item[key]] = (
+                    1 if ratingCrit == "clicks" else int(item["msPlayed"])
+                )
             else:
-                usedDict[item[key]] += 1 if ratingCrit == "clicks" else item["msPlayed"]
+                usedDict[item[key]] += (
+                    1 if ratingCrit == "clicks" else int(item["msPlayed"])
+                )
         elif key == "trackName":
             # when the popularItems should be returned they should be returned with "trackName - artistName"
             extendedKey = item["trackName"] + " - " + item["artistName"]
             if extendedKey not in usedDict.keys():
                 usedDict[extendedKey] = (
-                    1 if ratingCrit == "clicks" else item["msPlayed"]
+                    1 if ratingCrit == "clicks" else int(item["msPlayed"])
                 )
             else:
                 usedDict[extendedKey] += (
-                    1 if ratingCrit == "clicks" else item["msPlayed"]
+                    1 if ratingCrit == "clicks" else int(item["msPlayed"])
                 )
         return usedDict
 
