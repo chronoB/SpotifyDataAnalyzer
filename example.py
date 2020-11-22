@@ -1,8 +1,11 @@
+from typing import Mapping, Union
+
 from src.analyzer import Analyzer
 
 
-def main():
+def main() -> None:
     analyzer = Analyzer(["./data/example/testUser/StreamingHistory.json"])
+    payload: Mapping[str, Union[str, int]] = {}
 
     print("Example 1: getPopularArtists()")
     pa = analyzer.getPopularArtists()

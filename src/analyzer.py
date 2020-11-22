@@ -3,7 +3,7 @@ import json
 import operator
 import sqlite3
 from datetime import datetime
-from typing import Dict, List, Sequence, Tuple, Union
+from typing import Dict, List, Mapping, Sequence, Tuple, Union
 
 from .schemas import *
 
@@ -34,16 +34,16 @@ class Analyzer:
         return
 
     def getPopularArtists(
-        self, payload: Dict[str, Union[int, str]] = {}
+        self, payload: Mapping[str, Union[int, str]] = {}
     ) -> List[Tuple[str, int]]:
         return self._getPopular("artistName", payload=payload)
 
     def getPopularItems(
-        self, payload: Dict[str, Union[int, str]] = {}
+        self, payload: Mapping[str, Union[int, str]] = {}
     ) -> List[Tuple[str, int]]:
         return self._getPopular("trackName", payload=payload)
 
-    def getNumberOfItems(self, payload: Dict[str, Union[int, str]] = {}) -> int:
+    def getNumberOfItems(self, payload: Mapping[str, Union[int, str]] = {}) -> int:
         searchSpecs, keyword, media, count, ratingCrit = self._extractSearchSpecs(
             payload
         )
@@ -106,7 +106,7 @@ class Analyzer:
         return retDict
 
     def _getPopular(
-        self, key: str, payload: Dict[str, Union[int, str]] = {}
+        self, key: str, payload: Mapping[str, Union[int, str]] = {}
     ) -> List[Tuple[str, int]]:
         searchSpecs, keyword, media, count, ratingCrit = self._extractSearchSpecs(
             payload
@@ -295,7 +295,7 @@ class Analyzer:
         return usedDict
 
     def _extractSearchSpecs(
-        self, payload: Dict[str, Union[int, str]]
+        self, payload: Mapping[str, Union[int, str]]
     ) -> Tuple[Dict[str, int], str, str, int, str]:
         searchSpecs = SearchSpecifics(payload)
         media = (
