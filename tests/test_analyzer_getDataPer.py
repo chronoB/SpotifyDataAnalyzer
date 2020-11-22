@@ -1,3 +1,5 @@
+from typing import Dict, List, Tuple
+
 from .test_analyzer import analyzer_TestUser1
 
 
@@ -139,7 +141,7 @@ def test_getDataPerMonth_number(analyzer_TestUser1):
 def test_getDataPerMonth_artists(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, List[Tuple[str, int]]] = {}
     for month in range(1, 13):
         expectedResult[month] = []
     expectedResult[1] = [("Franz Ferdinand", 1), ("Almost Daily", 1)]
@@ -151,7 +153,7 @@ def test_getDataPerMonth_artists(analyzer_TestUser1):
 def test_getDataPerMonth_item(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, List[Tuple[str, int]]] = {}
     for month in range(1, 13):
         expectedResult[month] = []
     expectedResult[1] = [
@@ -170,7 +172,7 @@ def test_getDataPerMonth_item(analyzer_TestUser1):
 def test_getDataPerDay_noParameters(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, int] = {}
     for day in range(1, 32):
         expectedResult[day] = 0
     expectedResult[1] = 1
@@ -184,7 +186,7 @@ def test_getDataPerDay_noParameters(analyzer_TestUser1):
 def test_getDataPerDay_number(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, int] = {}
     for day in range(1, 32):
         expectedResult[day] = 0
     expectedResult[1] = 1
@@ -198,7 +200,7 @@ def test_getDataPerDay_number(analyzer_TestUser1):
 def test_getDataPerDay_artists(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, List[Tuple[str, int]]] = {}
     for day in range(1, 32):
         expectedResult[day] = []
     expectedResult[1] = [("Franz Ferdinand", 1)]
@@ -212,7 +214,7 @@ def test_getDataPerDay_artists(analyzer_TestUser1):
 def test_getDataPerDay_item(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, List[Tuple[str, int]]] = {}
     for day in range(1, 32):
         expectedResult[day] = []
     expectedResult[1] = [
@@ -230,7 +232,7 @@ def test_getDataPerDay_item(analyzer_TestUser1):
 def test_getDataPerWeekday_noParameters(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, int] = {}
     for day in range(0, 7):
         expectedResult[day] = 0
     expectedResult[0] = 1
@@ -243,7 +245,7 @@ def test_getDataPerWeekday_noParameters(analyzer_TestUser1):
 def test_getDataPerWeekday_number(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, int] = {}
     for day in range(0, 7):
         expectedResult[day] = 0
     expectedResult[0] = 1
@@ -256,7 +258,7 @@ def test_getDataPerWeekday_number(analyzer_TestUser1):
 def test_getDataPerWeekday_artists(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, List[Tuple[str, int]]] = {}
     for day in range(0, 7):
         expectedResult[day] = []
     expectedResult[0] = [("Franz Ferdinand", 1)]
@@ -271,7 +273,7 @@ def test_getDataPerWeekday_artists(analyzer_TestUser1):
 def test_getDataPerWeekday_item(analyzer_TestUser1):
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[int, List[Tuple[str, int]]] = {}
     for day in range(0, 7):
         expectedResult[day] = []
     expectedResult[0] = [
@@ -291,7 +293,7 @@ def test_getDataPerWeekday_weekdayFormat(analyzer_TestUser1):
 
     analyzer = analyzer_TestUser1
 
-    expectedResult = {}
+    expectedResult: Dict[str, int] = {}
     for day in weekdayNames:
         expectedResult[day] = 0
     expectedResult["monday"] = 1
