@@ -1,21 +1,14 @@
 import os
 import sqlite3
 import sys
-from sqlite3 import Error
+from sqlite3 import Connection, Error
 from string import ascii_lowercase
+from typing import Optional
 
 import requests
 
-try:
-    from dotenv import load_dotenv
 
-    load_dotenv("")
-    BEARER_TOKEN = os.getenv("BEARER_TOKEN")
-except ImportError as e:
-    print(e)
-
-
-def create_connection(db_file):
+def create_connection(db_file: str) -> Optional[Connection]:
     """create a database connection to the SQLite database
         specified by db_file
     :param db_file: database file
@@ -31,7 +24,7 @@ def create_connection(db_file):
     return conn
 
 
-def create_table(conn, create_table_sql):
+def create_table(conn: Connection, create_table_sql: str) -> None:
     """create a table from the create_table_sql statement
     :param conn: Connection object
     :param create_table_sql: a CREATE TABLE statement
@@ -44,7 +37,7 @@ def create_table(conn, create_table_sql):
         print(e)
 
 
-def create_podcast(conn, podcast):
+def create_podcast(conn: Connection, podcast: str) -> int:
     """
     Create a new podcast into the podcasts table
     :param conn:
@@ -65,8 +58,11 @@ def create_podcast(conn, podcast):
     return cur.lastrowid
 
 
-def populateDatabase(url):
-    headers = {"Authorization": "Bearer " + BEARER_TOKEN}
+def populateDatabase(url: str, conn: Connection) -> None:
+    if isinstance(BEARER_TOKEN, str):
+        headers = {"Authorization": "Bearer " + BEARER_TOKEN}
+    else:
+        raise Exception("Bearer token not defined")
     r = requests.get(url, headers=headers)
 
     if r.status_code == 200:
@@ -74,13 +70,22 @@ def populateDatabase(url):
         for show in data["shows"]["items"]:
             create_podcast(conn, show["name"])
         if data["shows"]["next"]:
-            populateDatabase(data["shows"]["next"])
+            populateDatabase(data["shows"]["next"], conn)
     elif r.status_code == 401:
         print("Error while requesting:")
         print(r.text)
 
 
 if __name__ == "__main__":
+
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv("")
+        BEARER_TOKEN: Optional[str] = os.getenv("BEARER_TOKEN")
+    except ImportError as e:
+        print(e)
+        exit()
 
     database_path = r"./data/podcasts.db"
     sql_create_podcasts_table = """ CREATE TABLE IF NOT EXISTS podcasts (
@@ -102,7 +107,7 @@ if __name__ == "__main__":
                 url + "&market=" + language
 
             print("Populating database for letter: " + letter)
-            populateDatabase(url)
+            populateDatabase(url, conn)
 
     else:
         print("Error! cannot create the database connection.")
