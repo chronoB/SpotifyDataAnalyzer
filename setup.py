@@ -32,7 +32,7 @@ setup(
     keywords="spotify data analysis",
     packages=find_packages(include=["src", "src.*", "examples.py"]),
     python_requires=">=3.6",
-    install_requires=["voluptuous==0.11.7"],
+    install_requires=["voluptuous==0.12.0"],
     tests_require=["pytest"],
     entry_points={"console_scripts": ["spotifydataanalyzer=example:main"]},
 )
