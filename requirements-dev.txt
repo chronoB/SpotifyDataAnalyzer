@@ -1,4 +1,4 @@
 ﻿-r requirements.txt
 pytest==6.2.1
 pytest-cov==2.11.1
-pre-commit==2.10.0
+pre-commit==2.11.0
