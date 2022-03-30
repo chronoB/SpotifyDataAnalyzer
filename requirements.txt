@@ -1,2 +1,2 @@
-﻿voluptuous==0.12.2
+﻿voluptuous==0.13.0
 requests==2.27.1
